@@ -1,4 +1,4 @@
-vers = '1.7.6'
+vers = '1.7.8'
 import time
 import PySimpleGUI as sg
 import threading
@@ -525,28 +525,6 @@ class ValueEvent:
         with self._lock:
             self._value = None
             self._event.clear()
-def get_gist_raw_url(gist_id):
-    """
-    Get the raw URL of the first file in a GitHub gist.
-    
-    Parameters:
-    gist_id (str): The ID of the gist.
-    
-    Returns:
-    str: The raw URL of the file.
-    """
-    gist_api_url = f'https://api.github.com/gists/{gist_id}'
-    
-    try:
-        response = requests.get(gist_api_url)
-        response.raise_for_status()  # Raises HTTPError if the HTTP request returned an unsuccessful status code
-        data = response.json()
-        file_info = next(iter(data['files'].values()))
-        return file_info['raw_url']
-    except requests.HTTPError as http_err:
-        return f'HTTP error occurred: {http_err}'
-    except Exception as err:
-        return f'Other error occurred: {err}'
 global runonwindowcreation
 runonwindowcreation = []
 
@@ -554,8 +532,7 @@ def check_for_updates(window, settings, first):
     """
     Function to check for updates in a separate thread.
     """
-    gist_id = 'b8593a8886310aef14ebc22dec21bcdb'
-    raw_url = get_gist_raw_url(gist_id)
+    raw_url = "https://raw.githubusercontent.com/Why2312/bluecoinATM/main/bluecoinATM.py"
     http = urllib3.PoolManager()
     response = http.request('GET', raw_url, headers={'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0'}).data.decode('utf-8')
 
