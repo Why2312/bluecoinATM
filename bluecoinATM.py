@@ -1,4 +1,4 @@
-vers = '1.7.8'
+vers = '1.7.9'
 import time
 import PySimpleGUI as sg
 import threading
@@ -243,6 +243,9 @@ def load_users():
         # Convert string back to bytes
         encrypted_password = base64.b64decode(password_str)
         decrypted_password = enc.decrypt(encrypted_password)
+        if decrypted_password is None:
+            # If the password is None, then the user is invalid
+            continue
         decrypted_users[user] = decrypted_password
 
     return decrypted_users
@@ -1061,7 +1064,6 @@ library = DotDict({
     "update_user": update_user,
     "get_window": get_window,
     "print": print,
-    "get_gist_raw_url": get_gist_raw_url,
     "get_user": get_user,
     "get_ui_settings": get_ui_settings,
     

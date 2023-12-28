@@ -3,6 +3,7 @@ import hashlib
 import base64
 from cryptography.fernet import Fernet
 import platform
+import time
 
 def get_hwid_windows():
     # Getting various hardware identifiers
@@ -59,5 +60,10 @@ class HWIDBasedEncryption:
         return encrypted_message
 
     def decrypt(self, encrypted_message):
-        decrypted_message = self.fernet.decrypt(encrypted_message).decode()
-        return decrypted_message
+        try:
+            decrypted_message = self.fernet.decrypt(encrypted_message).decode()
+            return decrypted_message
+        except:
+            print("ALERT: DECRYPTION FAILED, PASSWORDS INVALID.")
+            time.sleep(1)
+            return None
